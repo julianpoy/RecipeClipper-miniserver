@@ -1,0 +1,52 @@
+{
+  "name": "recipeclipper-miniserver",
+  "version": "1.0.0",
+  "description": "Recipe extraction/text extraction",
+  "homepage": "https://github.com/julianpoy/RecipeClipper-miniserver#readme",
+  "bugs": {
+    "url": "https://github.com/julianpoy/RecipeClipper-miniserver/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julianpoy/RecipeClipper-miniserver.git"
+  },
+  "license": "AGPL",
+  "author": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/sensible": "^5.6.0",
+    "@julianpoy/recipe-clipper": "^3.2.0",
+    "@sentry/node": "^8.0.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "jsdom": "^25.0.0",
+    "pino": "^9.4.0",
+    "pino-pretty": "^11.2.2",
+    "prom-client": "^15.1.3",
+    "sanitize-html": "^2.13.1"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.10.5",
+    "@types/sanitize-html": "^2.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1",
+    "eslint": "^9.18.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

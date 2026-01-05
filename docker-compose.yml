@@ -1,0 +1,32 @@
+services:
+  recipeclipper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: recipeclipper-api
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-production}
+      - INGREDIENT_INSTRUCTION_CLASSIFIER_URL=${INGREDIENT_INSTRUCTION_CLASSIFIER_URL:-}
+      - MAX_BODY_SIZE=${MAX_BODY_SIZE:-10485760}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - recipeclipper
+
+networks:
+  recipeclipper:
+    driver: bridge
