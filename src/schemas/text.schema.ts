@@ -1,3 +1,5 @@
+import { ENV } from '../config/environment.js';
+
 export const textExtractRequestSchema = {
   body: {
     type: 'object',
@@ -6,12 +8,11 @@ export const textExtractRequestSchema = {
       html: {
         type: 'string',
         minLength: 1,
-        maxLength: 1000000,
+        maxLength: ENV.MAX_HTML_SIZE,
       },
       options: {
         type: 'object',
         properties: {
-          sanitize: { type: 'boolean' },
           removeScripts: { type: 'boolean' },
         },
         additionalProperties: false,

@@ -1,3 +1,5 @@
+import { ENV } from '../config/environment.js';
+
 export const recipeExtractRequestSchema = {
   body: {
     type: 'object',
@@ -6,7 +8,7 @@ export const recipeExtractRequestSchema = {
       html: {
         type: 'string',
         minLength: 1,
-        maxLength: 1000000,
+        maxLength: ENV.MAX_HTML_SIZE,
       },
       options: {
         type: 'object',

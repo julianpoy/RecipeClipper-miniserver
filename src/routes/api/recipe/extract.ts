@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { extractRecipe, RecipeExtractionOptions } from '../../../services/recipeClipper.service.js';
+import { extractRecipe } from '../../../services/recipeClipper.service.js';
 import { recipeExtractSchema } from '../../../schemas/recipe.schema.js';
+import type { RecipeExtractionOptions } from '../../../workers/jsdom.worker.js';
 import {
   recipeAttemptsCounter,
   recipeSuccessesCounter,
@@ -19,32 +20,32 @@ export default async function recipeExtractRoutes(fastify: FastifyInstance) {
     { schema: recipeExtractSchema },
     async (request: FastifyRequest<{ Body: RecipeExtractBody }>, reply: FastifyReply) => {
       recipeAttemptsCounter.inc();
-      const startTime = Date.now();
+      const startTime = performance.now();
 
       try {
         const { html, options } = request.body;
 
         const recipeData = await extractRecipe(html, options);
 
-        const processingTime = Date.now() - startTime;
-        const durationSeconds = processingTime / 1000;
+        const time = performance.now() - startTime;
+        const timeSeconds = time / 1000;
 
         recipeSuccessesCounter.inc();
-        recipeDurationHistogram.observe(durationSeconds);
+        recipeDurationHistogram.observe(timeSeconds);
 
         return reply.status(200).send({
           success: true,
           data: recipeData,
-          processingTime,
+          processingTime: time,
         });
       } catch (error: any) {
         request.log.error({ error }, 'Recipe extraction failed');
 
-        const processingTime = Date.now() - startTime;
-        const durationSeconds = processingTime / 1000;
+        const time = performance.now() - startTime;
+        const timeSeconds = time / 1000;
 
         recipeFailuresCounter.inc();
-        recipeDurationHistogram.observe(durationSeconds);
+        recipeDurationHistogram.observe(timeSeconds);
 
         const statusCode = error.statusCode || 422;
         const message = error.message || 'Failed to extract recipe from HTML';

@@ -1,5 +1,6 @@
 import { createServer } from './server.js';
 import { ENV } from './config/environment.js';
+import { terminateWorkerPool } from './services/workerPool.service.js';
 
 async function start() {
   try {
@@ -17,6 +18,10 @@ async function start() {
       try {
         await server.close();
         console.log('Server closed successfully');
+
+        await terminateWorkerPool();
+        console.log('Worker pool terminated successfully');
+
         process.exit(0);
       } catch (error) {
         console.error('Error during shutdown:', error);
